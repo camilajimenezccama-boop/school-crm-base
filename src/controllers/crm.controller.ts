@@ -134,7 +134,21 @@ export class CRMController {
      */
     public async registrarSancion(alumnoId: string, profesorId: string, tipo: TipoSancion, descripcion: string): Promise<void> {
         // TODO: Implementar lógica de inserción asíncrona.
-        throw new Error('Método no implementado');
+        return new Promise(resolve => {
+        setTimeout(() => {
+            const sancion: Sancion = {
+                id: crypto.randomUUID(),
+                alumnoId,
+                profesorId,
+                fecha: new Date().toISOString().split('T')[0],
+                tipo,
+                descripcion
+            };
+
+            this.sancionesStorage.add(sancion);
+            resolve();
+        }, 300);
+        });
     }
 
     /**
