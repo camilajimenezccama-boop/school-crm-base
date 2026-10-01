@@ -92,7 +92,7 @@ export class CRMController {
 
 */
 
-import type { Asistencia, Sancion, RegistroHorario, EstadoAsistencia, TipoSancion } from '../models/interfaces';
+import type { Asistencia, Sancion, RegistroHorario, EstadoAsistencia, TipoSancion, FranjaHoraria } from '../models/interfaces';
 import { StorageService } from '../services/storage.service';
 
 export class CRMController {
@@ -104,11 +104,30 @@ export class CRMController {
     /**
      * Registra una falta, retraso o asistencia en el sistema de forma asíncrona.
      */
-    public async registrarAsistencia(alumnoId: string, profesorId: string, franja: string, estado: EstadoAsistencia): Promise<boolean> {
-        // TODO: El alumno debe implementar la simulación de retraso de red (setTimeout con Promise)
-        // y añadir el registro usando el servicio de almacenamiento.
-        throw new Error('Método no implementado');
+    public async registrarAsistencia(
+    alumnoId: string,
+    profesorId: string,
+    franja: FranjaHoraria,
+    estado: EstadoAsistencia
+    ): Promise<boolean> {
+
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const asistencia: Asistencia = {
+                    id: crypto.randomUUID(),
+                    alumnoId,
+                    profesorId,
+                    fecha: new Date().toISOString().split('T')[0],
+                    franja, 
+                    estado
+                };
+
+                this.asistenciaStorage.add(asistencia);
+                resolve(true);
+            }, 300);
+        });
     }
+
 
     /**
      * Registra una sanción disciplinaria.
@@ -135,5 +154,6 @@ export class CRMController {
         // TODO: Filtrar asistencias y sanciones del alumno para devolver el objeto con los contadores.
         throw new Error('Método no implementado');
     }
+    
 }
 
